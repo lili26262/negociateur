@@ -1,0 +1,9 @@
+{
+  "name": "Le Négociateur",
+  "short_name": "Négociateur",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ECEFF8",
+  "theme_color": "#ECEFF8",
+  "lang": "fr"
+}
