@@ -7,7 +7,7 @@ const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.ANTHROPIC_API_KEY;
-const PUBLIC_DIR = __dirname;
+const PUBLIC_DIR = fs.existsSync(path.join(__dirname, "public")) ? path.join(__dirname, "public") : __dirname;
 const MAX_BODY = 12 * 1024 * 1024; // 12 Mo
 
 const TYPES = {
@@ -88,13 +88,14 @@ async function handleApi(req, res) {
   try {
     const r = await relayToAnthropic(payload);
     if (!r.ok) {
-      console.error("Anthropic error", r.status, JSON.stringify(r.data).slice(0, 300));
-      return send(res, 502, { error: "upstream" });
+      const msg = (r.data && r.data.error && r.data.error.message) || "";
+      console.error("Anthropic error", r.status, msg.slice(0, 300));
+      return send(res, 502, { error: "upstream", message: "Erreur " + r.status + " : " + msg.slice(0, 300) });
     }
     return send(res, 200, r.data);
   } catch (e) {
     console.error("Relay failed", e && e.message);
-    return send(res, 502, { error: "upstream" });
+    return send(res, 502, { error: "upstream", message: "Serveur : " + (e && e.message) });
   }
 }
 
