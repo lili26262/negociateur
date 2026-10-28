@@ -7,7 +7,7 @@ const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.ANTHROPIC_API_KEY;
-const PUBLIC_DIR = path.join(__dirname, "public");
+const PUBLIC_DIR = __dirname;
 const MAX_BODY = 12 * 1024 * 1024; // 12 Mo
 
 const TYPES = {
